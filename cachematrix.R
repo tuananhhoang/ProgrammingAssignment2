@@ -1,5 +1,7 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Contains 2 functions supporting:
+## 1. makeCacheMatrix: Create a special matrix object that cache its inverse
+## 2. cacheSolve: Calculate inverse matrix, cache it (if inverse matrix does 
+##    exist in the cache) and return
 
 ## Create a special matrix object that can cache its inverse
 makeCacheMatrix <- function(x = matrix()) {
@@ -9,11 +11,11 @@ makeCacheMatrix <- function(x = matrix()) {
         i <<- NULL
     }
     get <- function() x
-    setInversion <- function(inversion) i <<- inversion
-    getInversion <- function() i
+    setInverse <- function(Inverse) i <<- Inverse
+    getInverse <- function() i
     list(set = set, get = get,
-         setInversion = setInversion,
-         getInversion = getInversion)
+         setInverse = setInverse,
+         getInverse = getInverse)
 }
 
 
@@ -22,14 +24,13 @@ makeCacheMatrix <- function(x = matrix()) {
 ## In case there is no inverse matrix in the cached, this function will calculate
 ## the inverse matrix and return it.
 cacheSolve <- function(x, ...) {
-    ## Return a matrix that is the inverse of 'x'
-    i <- x$getInversion()
+    i <- x$getInverse()
     if(!is.null(i)) {
             message("getting cached data")
             return(i)
     }
     data <- x$get()
     i <- solve(data, ...)
-    x$setInversion(i)
-    i
+    x$setInverse(i)
+    i ## Return matrix i that is the inverse of 'x'
 }
